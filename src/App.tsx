@@ -1,4 +1,6 @@
 import './App.css';
+import './reset.css';
+
 import { Header, Body } from './components/layout';
 
 function App() {
