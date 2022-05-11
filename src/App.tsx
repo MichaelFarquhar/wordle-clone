@@ -1,9 +1,11 @@
 import './App.css';
+import { Header, Body } from './components/layout';
 
 function App() {
     return (
         <div className="app">
-            <h1>Wordle</h1>
+            <Header />
+            <Body />
         </div>
     );
 }
