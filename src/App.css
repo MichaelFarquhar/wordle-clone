@@ -7,3 +7,14 @@
     color: white;
     font-family: 'Fira Sans Condensed', sans-serif;
 }
+
+a {
+    color: #ffc06c;
+    transition: 100ms ease-in;
+}
+a:hover {
+    color: #ffab3b;
+}
+a:active {
+    color: #ffab3b;
+}
