@@ -1,5 +1,5 @@
 import './App.css';
-import './reset.css';
+import './normalize.css';
 
 import { Header, Body, Footer } from './components/layout';
 
