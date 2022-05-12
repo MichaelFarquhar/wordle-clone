@@ -4,7 +4,7 @@ import { FaGithub } from 'react-icons/fa';
 
 export const Header = () => {
     return (
-        <div className="header">
+        <header className="header">
             <div>{/* Spacing to center the title */}</div>
             <h1>Wordle</h1>
             <a
@@ -14,6 +14,6 @@ export const Header = () => {
             >
                 <FaGithub />
             </a>
-        </div>
+        </header>
     );
 };

@@ -3,8 +3,8 @@ import Keyboard from '../../Keyboard/Keyboard';
 
 export const Body = () => {
     return (
-        <div>
+        <main>
             <Keyboard />
-        </div>
+        </main>
     );
 };
