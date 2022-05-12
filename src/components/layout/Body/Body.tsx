@@ -1,5 +1,10 @@
 import React from 'react';
+import Keyboard from '../../Keyboard/Keyboard';
 
 export const Body = () => {
-    return <div>Body</div>;
+    return (
+        <div>
+            <Keyboard />
+        </div>
+    );
 };

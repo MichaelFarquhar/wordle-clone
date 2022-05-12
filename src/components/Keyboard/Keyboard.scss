@@ -1,0 +1,36 @@
+.keyboard {
+    width: 100%;
+
+    &__row {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__btn {
+        display: grid;
+        place-items: center;
+        margin: 0.15em;
+        padding: 0.4em;
+        min-width: 55px;
+        height: 60px;
+        font-size: 1.25rem;
+        background: rgb(212, 212, 212);
+        border-radius: 6px;
+        font-weight: bold;
+        transition: 100ms ease;
+
+        &:hover {
+            cursor: pointer;
+            background: rgb(195, 195, 195);
+        }
+
+        &--disabled {
+            background: rgb(131, 131, 131);
+
+            &:hover {
+                cursor: not-allowed;
+                background: rgb(131, 131, 131);
+            }
+        }
+    }
+}
