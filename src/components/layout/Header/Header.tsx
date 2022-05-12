@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from './Header.module.css';
+import './Header.scss';
 import { FaGithub } from 'react-icons/fa';
 
 export const Header = () => {
     return (
-        <div className={styles.header}>
+        <div className="header">
             <div>{/* Spacing to center the title */}</div>
             <h1>Wordle</h1>
             <a
