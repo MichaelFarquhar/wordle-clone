@@ -1,13 +1,14 @@
 import './App.css';
 import './reset.css';
 
-import { Header, Body } from './components/layout';
+import { Header, Body, Footer } from './components/layout';
 
 function App() {
     return (
         <div className="app">
             <Header />
             <Body />
+            <Footer />
         </div>
     );
 }

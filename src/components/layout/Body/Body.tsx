@@ -1,9 +1,10 @@
 import React from 'react';
 import Keyboard from '../../Keyboard/Keyboard';
+import './Body.scss';
 
 export const Body = () => {
     return (
-        <main>
+        <main className="main">
             <Keyboard />
         </main>
     );
