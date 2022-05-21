@@ -16,7 +16,6 @@ async function fetchAllWords(): Promise<Set<string>> {
         .then((text) => {
             // Turn string into array, then return as a new Set
             wordleListArray = text.split(/\r?\n/);
-            console.log(wordleListArray);
             return new Set(wordleListArray);
         })
         .catch((err) => console.log(err));
