@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../../context/AppContext';
 import './Keyboard.scss';
 
 interface Props {
@@ -7,11 +8,13 @@ interface Props {
 }
 
 const KeyboardButton = ({ text, disabled }: Props) => {
+    const { setCurrentGuess } = useContext(AppContext).actions;
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
 
         const button: HTMLElement = event.currentTarget;
-        console.log(button.innerHTML);
+        setCurrentGuess((guess: string[]) => [...guess, button.innerHTML]);
     };
 
     return (

@@ -70,14 +70,29 @@ const initialContext: IAppContext = {
 export const AppContext = createContext(initialContext);
 
 export function AppProvider({ children }: IAppProvider) {
-    const [wordList, setWordList] = useState<Set<string>>(new Set());
+    const [allWords, setAllWords] = useState<Set<string>>(new Set());
+    const [currentGuess, setCurrentGuess] = useState<string[]>([]);
 
     // Store Word Set into state
     const memoizedFetchWords = useCallback(() => {
         fetchAllWords().then((wordSet) => {
-            setWordList(wordSet);
+            setAllWords(wordSet);
         });
     }, []);
+
+    // Handles keyboard press
+    useEffect(() => {
+        window.addEventListener('keyup', handleKeyUp);
+        return () => {
+            window.removeEventListener('keyup', handleKeyUp);
+        };
+    }, []);
+
+    const handleKeyUp = ({ key }: KeyboardEvent) => {
+        if (letters.includes(key)) {
+            setCurrentGuess((guess: string[]) => [...guess, key]);
+        }
+    };
 
     useEffect(() => {
         memoizedFetchWords();
@@ -87,11 +102,13 @@ export function AppProvider({ children }: IAppProvider) {
         <AppContext.Provider
             value={{
                 store: {
-                    allWords: wordList,
+                    allWords,
                     letters: letterMap,
+                    currentGuess,
                 },
                 actions: {
-                    setWordList,
+                    setAllWords,
+                    setCurrentGuess,
                 },
             }}
         >
