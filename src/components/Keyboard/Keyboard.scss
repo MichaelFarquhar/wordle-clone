@@ -14,10 +14,11 @@
         min-width: 55px;
         height: 60px;
         font-size: 1.25rem;
-        background: rgb(212, 212, 212);
+        background: rgb(137 137 137);
+        color: white;
         border-radius: 6px;
-        font-weight: bold;
         transition: 100ms ease;
+        text-transform: uppercase;
 
         &:hover {
             cursor: pointer;

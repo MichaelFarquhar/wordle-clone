@@ -1,54 +1,48 @@
 import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import './normalize.css';
-import { AppContext } from './context/AppContext';
 
 import { Header, Body, Footer } from './components/layout';
 
-// Wordle word list found here: https://gist.github.com/cfreshman/a7b776506c73284511034e63af1017ee
-async function fetchAllWords(): Promise<Set<string>> {
-    const wordleList = require('./wordle-list.txt');
-    let wordleListArray: Array<string>;
+import { getLetters } from './utils/getLetters';
+import { LetterType } from './context/ContextTypes';
 
-    // Get word list from file reader
-    const fetchFile = await fetch(wordleList)
-        .then((resp) => resp.text())
-        .then((text) => {
-            // Turn string into array, then return as a new Set
-            wordleListArray = text.split(/\r?\n/);
-            return new Set(wordleListArray);
-        })
-        .catch((err) => console.log(err));
+import { AppProvider } from './context/AppContext';
 
-    return fetchFile ?? new Set();
-}
+// Get all letters and set letter object in context
+const letters = getLetters;
+const lettersObject = letters.reduce((accumulator, value) => {
+    return {
+        ...accumulator,
+        [value]: {
+            letter: value,
+            status: LetterType.DEFAULT,
+        },
+    };
+}, {});
 
 function App() {
     const [data, setData] = useState({});
-    const [wordList, setWordList] = useState<Set<string>>(new Set());
+    // const [wordList, setWordList] = useState<Set<string>>(new Set());
 
-    // Store Word Set into state
-    const memoizedFetchWords = useCallback(() => {
-        fetchAllWords().then((wordSet) => {
-            setWordList(wordSet);
-        });
-    }, [wordList]);
+    // // Store Word Set into state
+    // const memoizedFetchWords = useCallback(() => {
+    //     fetchAllWords().then((wordSet) => {
+    //         setWordList(wordSet);
+    //     });
+    // }, []);
 
-    useEffect(() => {
-        memoizedFetchWords();
-    }, []);
+    // useEffect(() => {
+    //     memoizedFetchWords();
+    // }, []);
 
     return (
         <div className="app">
-            <Header />
-            <AppContext.Provider
-                value={{
-                    wordList,
-                }}
-            >
+            <AppProvider>
+                <Header />
                 <Body />
-            </AppContext.Provider>
-            <Footer />
+                <Footer />
+            </AppProvider>
         </div>
     );
 }
