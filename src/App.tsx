@@ -38,8 +38,6 @@ function App() {
         memoizedFetchWords();
     }, []);
 
-    console.log(wordList);
-
     return (
         <div className="app">
             <Header />
