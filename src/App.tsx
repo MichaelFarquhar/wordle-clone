@@ -1,48 +1,39 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import './App.css';
 import './normalize.css';
 
 import { Header, Body, Footer } from './components/layout';
-
+import { AppContext } from './context/AppContext';
 import { getLetters } from './utils/getLetters';
-import { LetterType } from './context/ContextTypes';
-
-import { AppProvider } from './context/AppContext';
-
-// Get all letters and set letter object in context
-const letters = getLetters;
-const lettersObject = letters.reduce((accumulator, value) => {
-    return {
-        ...accumulator,
-        [value]: {
-            letter: value,
-            status: LetterType.DEFAULT,
-        },
-    };
-}, {});
 
 function App() {
-    const [data, setData] = useState({});
-    // const [wordList, setWordList] = useState<Set<string>>(new Set());
+    const letters = getLetters;
+    const { board, currentRow, currentLetter } = useContext(AppContext).store;
+    const { setCurrentGuess, setCurrentLetter, setCurrentRow, updateBoard } =
+        useContext(AppContext).actions;
 
-    // // Store Word Set into state
-    // const memoizedFetchWords = useCallback(() => {
-    //     fetchAllWords().then((wordSet) => {
-    //         setWordList(wordSet);
-    //     });
-    // }, []);
+    // Handles keyboard press
+    useEffect(() => {
+        window.addEventListener('keyup', handleKeyUp);
+        return () => {
+            window.removeEventListener('keyup', handleKeyUp);
+        };
+    }, []);
 
-    // useEffect(() => {
-    //     memoizedFetchWords();
-    // }, []);
+    const handleKeyUp = ({ key }: KeyboardEvent) => {
+        if (letters.includes(key)) {
+            setCurrentGuess((guess: string[]) => [...guess, key]);
+            setCurrentLetter((curr: number) => curr + 1);
+            setCurrentRow((curr: number) => curr + 1);
+            updateBoard(key);
+        }
+    };
 
     return (
         <div className="app">
-            <AppProvider>
-                <Header />
-                <Body />
-                <Footer />
-            </AppProvider>
+            <Header />
+            <Body />
+            <Footer />
         </div>
     );
 }

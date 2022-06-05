@@ -63,6 +63,8 @@ const initialContext: IAppContext = {
         currentGuess: [],
         currentRow: 0,
         letters: new Map(),
+        board: Array(30).fill(''),
+        currentLetter: 0,
     },
     actions: {},
 };
@@ -72,6 +74,24 @@ export const AppContext = createContext(initialContext);
 export function AppProvider({ children }: IAppProvider) {
     const [allWords, setAllWords] = useState<Set<string>>(new Set());
     const [currentGuess, setCurrentGuess] = useState<string[]>([]);
+    const [board, setBoard] = useState<string[]>(Array(30).fill(''));
+    const [winningWord, setWinningWord] = useState<string[]>([]);
+
+    const [currentRow, setCurrentRow] = useState(0);
+    const [currentLetter, setCurrentLetter] = useState(0);
+
+    console.log(currentRow);
+
+    const updateBoard = (key: string) => {
+        let position = currentRow + currentLetter;
+        console.log(position);
+        console.log(currentRow);
+        console.log(currentLetter);
+        const currentBoard = board;
+        currentBoard[position] = key;
+
+        setBoard(() => [...currentBoard]);
+    };
 
     // Store Word Set into state
     const memoizedFetchWords = useCallback(() => {
@@ -79,20 +99,6 @@ export function AppProvider({ children }: IAppProvider) {
             setAllWords(wordSet);
         });
     }, []);
-
-    // Handles keyboard press
-    useEffect(() => {
-        window.addEventListener('keyup', handleKeyUp);
-        return () => {
-            window.removeEventListener('keyup', handleKeyUp);
-        };
-    }, []);
-
-    const handleKeyUp = ({ key }: KeyboardEvent) => {
-        if (letters.includes(key)) {
-            setCurrentGuess((guess: string[]) => [...guess, key]);
-        }
-    };
 
     useEffect(() => {
         memoizedFetchWords();
@@ -105,10 +111,18 @@ export function AppProvider({ children }: IAppProvider) {
                     allWords,
                     letters: letterMap,
                     currentGuess,
+                    board,
+                    currentRow,
+                    currentLetter,
+                    winningWord,
                 },
                 actions: {
                     setAllWords,
                     setCurrentGuess,
+                    setCurrentLetter,
+                    setCurrentRow,
+                    updateBoard,
+                    setWinningWord,
                 },
             }}
         >

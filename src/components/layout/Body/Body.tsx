@@ -4,6 +4,7 @@ import './Body.scss';
 
 import { useContext } from 'react';
 import { AppContext } from '../../../context/AppContext';
+import Wordboard from '../../WordBoard/WordBoard';
 
 export const Body = () => {
     const context = useContext(AppContext);
@@ -11,6 +12,7 @@ export const Body = () => {
 
     return (
         <main className="main">
+            <Wordboard />
             <Keyboard />
         </main>
     );

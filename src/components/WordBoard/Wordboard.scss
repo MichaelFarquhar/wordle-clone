@@ -1,0 +1,13 @@
+.wordboard {
+    display: grid;
+    gap: 1em;
+    grid-template-columns: repeat(5, 1fr);
+
+    &__letter {
+        padding: 0.5rem;
+        color: white;
+        font-size: 1.5em;
+        text-transform: uppercase;
+        background-color: black;
+    }
+}
