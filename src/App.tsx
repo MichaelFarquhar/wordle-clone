@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import './App.css';
 import './normalize.css';
 
