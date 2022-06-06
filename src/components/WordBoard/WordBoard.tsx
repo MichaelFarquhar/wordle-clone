@@ -1,19 +1,15 @@
-import { useContext } from 'react';
-import { AppContext } from '../../context/AppContext';
+import { useRecoilValue } from 'recoil';
+import { boardState } from '../../App';
 import './Wordboard.scss';
 
 const Wordboard = () => {
-    const { board } = useContext(AppContext).store;
+    const { board } = useRecoilValue(boardState);
 
     return (
         <section className="wordboard">
-            {Array(30)
-                .fill('')
-                .map((item, index) => (
-                    <div className="wordboard__letter">
-                        {board && (board[index] || '')}
-                    </div>
-                ))}
+            {board.map((item) => (
+                <div className="wordboard__letter">{item}</div>
+            ))}
         </section>
     );
 };

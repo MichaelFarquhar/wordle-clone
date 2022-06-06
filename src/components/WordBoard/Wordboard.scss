@@ -1,13 +1,21 @@
 .wordboard {
     display: grid;
-    gap: 1em;
+    gap: 0.5em;
     grid-template-columns: repeat(5, 1fr);
+    width: fit-content;
+    margin: 2em auto;
 
     &__letter {
-        padding: 0.5rem;
+        width: 20px;
+        height: 25px;
+        padding: 1rem 1.25rem;
         color: white;
         font-size: 1.5em;
         text-transform: uppercase;
-        background-color: black;
+        background-color: #1e1e1e;
+        line-height: 1;
+        border-radius: 8px;
+        text-align: center;
+        border: 2px solid #3a3a3c;
     }
 }
