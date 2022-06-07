@@ -7,8 +7,10 @@ const Wordboard = () => {
 
     return (
         <section className="wordboard">
-            {board.map((item) => (
-                <div className="wordboard__letter">{item}</div>
+            {board.map((item, index) => (
+                <div className="wordboard__letter" key={index}>
+                    {item}
+                </div>
             ))}
         </section>
     );
