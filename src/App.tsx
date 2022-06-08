@@ -4,33 +4,65 @@ import './normalize.css';
 
 import { Header, Body, Footer } from './components/layout';
 import { getLetters } from './utils/getLetters';
-import { atom, DefaultValue, selector, useRecoilState, useSetRecoilState } from 'recoil';
+import {
+    atom,
+    DefaultValue,
+    selector,
+    useRecoilState,
+    useRecoilValue,
+    useSetRecoilState,
+} from 'recoil';
 import { showErrorToast } from './utils/showErrorToast';
 import { ToastContainer } from 'react-toastify';
 
 import { allWordsState, fetchAllWords } from './state/allWords';
 
-// The current row we are on on the board, starting at 0
-export const rowState = atom({
-    key: 'rowState',
-    default: 0,
-});
-
 interface IBoard {
     board: string[];
     currentIndex: number;
+    currentRow: number;
 }
+
 // The backend of the board state
 export const boardState = atom<IBoard>({
     key: 'boardState',
     default: {
         board: Array(30).fill(''),
         currentIndex: 0,
+        currentRow: 0,
     },
 });
 
-const invalidWordStateUpdateSelector = selector<IBoard>({
-    key: 'invalidWordStateUpdate',
+// Returns true if a letter can be added to the board
+export const canAddLetterSelector = selector<boolean>({
+    key: 'canAddLetterSelector',
+    get: ({ get }) => {
+        const { currentIndex, currentRow } = get(boardState);
+        return !(currentIndex > 0 + currentRow * 5 && currentIndex % 5 === 0);
+    },
+});
+
+// Returns true if a letter can be removed to the board
+export const canRemoveLetterSelector = selector<boolean>({
+    key: 'canRemoveLetterSelector',
+    get: ({ get }) => {
+        const { currentIndex, currentRow } = get(boardState);
+        return currentIndex > 0 + currentRow * 5;
+    },
+});
+
+// Returns true if there are 5 letters present in the row
+export const canCheckRowSelector = selector<boolean>({
+    key: 'canCheckRowSelector',
+    get: ({ get }) => {
+        const { currentIndex, currentRow } = get(boardState);
+        return currentIndex > 0 + currentRow * 5 && currentIndex % 5 === 0;
+    },
+});
+
+// Will clear the current row of the board if the word entered was not a valid word
+const invalidWordSelector = selector<IBoard>({
+    key: 'invalidWordSelector',
     get: ({ get }) => ({ ...get(boardState) }),
     set: ({ set }, oldBoard) => {
         set(
@@ -39,6 +71,7 @@ const invalidWordStateUpdateSelector = selector<IBoard>({
                 ? {
                       board: Array(30).fill(''),
                       currentIndex: 0,
+                      currentRow: 0,
                   }
                 : {
                       ...oldBoard,
@@ -74,11 +107,14 @@ function App() {
 
     const [board, setBoard] = useRecoilState(boardState);
     const [allWords, setAllWords] = useRecoilState(allWordsState);
-    const setBoardSelector = useSetRecoilState(invalidWordStateUpdateSelector);
+    const setBoardSelector = useSetRecoilState(invalidWordSelector);
+
+    const canAddLetter = useRecoilValue(canAddLetterSelector);
+    const canRemoveLetter = useRecoilValue(canRemoveLetterSelector);
+    const canCheckRow = useRecoilValue(canCheckRowSelector);
 
     const checkEnteredWord = () => {
-        // If 5 letters have been entered, check letters
-        if (board.currentIndex !== 0 && board.currentIndex % 5 === 0) {
+        if (canCheckRow) {
             const current_word = [
                 ...board.board.slice(board.currentIndex - 5, board.currentIndex),
             ].join('');
@@ -92,10 +128,9 @@ function App() {
             else {
                 setBoard((oldBoard) => ({
                     ...oldBoard,
-                    currentIndex: oldBoard.currentIndex + 1,
+                    currentRow: oldBoard.currentRow + 1,
                 }));
             }
-
             console.log(current_word);
         }
     };
@@ -106,33 +141,26 @@ function App() {
     }, []);
 
     const addLetter = (letter: string) => {
-        // Dont add anymore letters if 5 or more are entered for the row
-        if (board.currentIndex > 0 && board.currentIndex % 5 == 0) {
-            return;
+        if (canAddLetter) {
+            setBoard((oldBoard) => ({
+                ...oldBoard,
+                board: [
+                    ...oldBoard.board.slice(0, oldBoard.currentIndex),
+                    letter,
+                    ...oldBoard.board.slice(oldBoard.currentIndex + 1),
+                ],
+                currentIndex: oldBoard.currentIndex + 1,
+            }));
         }
-
-        // Add letter
-        setBoard((oldBoard) => ({
-            board: [
-                ...oldBoard.board.slice(0, oldBoard.currentIndex),
-                letter,
-                ...oldBoard.board.slice(oldBoard.currentIndex + 1),
-            ],
-            currentIndex: oldBoard.currentIndex + 1,
-        }));
-
-        console.log(board.currentIndex);
     };
 
     const removeLetter = () => {
-        const letter = '';
-
-        // Only remove letters if any can be removed
-        if (board.currentIndex > 0) {
+        if (canRemoveLetter) {
             setBoard((oldBoard) => ({
+                ...oldBoard,
                 board: [
                     ...oldBoard.board.slice(0, oldBoard.currentIndex - 1),
-                    letter,
+                    '',
                     ...oldBoard.board.slice(oldBoard.currentIndex),
                 ],
                 currentIndex: oldBoard.currentIndex - 1,
@@ -148,7 +176,7 @@ function App() {
         }
 
         // If Enter is pressed and 5 letters are present
-        if (key === 'Enter' && board.currentIndex > 0 && board.currentIndex % 5 == 0) {
+        if (key === 'Enter') {
             checkEnteredWord();
         }
 
@@ -167,7 +195,6 @@ function App() {
             <ToastContainer />
 
             <Header />
-            <button onClick={() => setBoardSelector((board) => board)}>test</button>
             <Body />
             <Footer />
         </div>

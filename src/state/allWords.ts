@@ -8,6 +8,12 @@ export const allWordsState = atom<Set<string>>({
     default: new Set(),
 });
 
+// Atom for the current winning word to be guessed
+export const winningWordState = atom<string>({
+    key: 'winningWordState',
+    default: '',
+});
+
 // Fetch all words from txt file and return as a Set -- to be stored into atom
 export async function fetchAllWords(): Promise<Set<string>> {
     const wordleList = require('../wordle-list.txt');
