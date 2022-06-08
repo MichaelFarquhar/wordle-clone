@@ -17,5 +17,16 @@
         border-radius: 8px;
         text-align: center;
         border: 2px solid #3a3a3c;
+
+        // 0, 1 --> Nothing
+        // 2 --> Yellow background
+        // 3 --> Green background
+
+        &.status2 {
+            background-color: #c9b458;
+        }
+        &.status3 {
+            background-color: #6aaa64;
+        }
     }
 }

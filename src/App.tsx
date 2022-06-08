@@ -15,7 +15,8 @@ import {
 import { showErrorToast } from './utils/showErrorToast';
 import { ToastContainer } from 'react-toastify';
 
-import { allWordsState, fetchAllWords } from './state/allWords';
+import { allWordsState, fetchAllWords, winningWordState } from './state/allWords';
+import { lettersStatusState, LetterStatus } from './state/letters';
 
 interface IBoard {
     board: string[];
@@ -108,6 +109,8 @@ function App() {
     const [board, setBoard] = useRecoilState(boardState);
     const [allWords, setAllWords] = useRecoilState(allWordsState);
     const setBoardSelector = useSetRecoilState(invalidWordSelector);
+    const winningWord = useRecoilValue(winningWordState);
+    const [lettersStatus, setLettersStatus] = useRecoilState(lettersStatusState);
 
     const canAddLetter = useRecoilValue(canAddLetterSelector);
     const canRemoveLetter = useRecoilValue(canRemoveLetterSelector);
@@ -126,6 +129,29 @@ function App() {
             }
             // Word is a valid word, we perform letter checking
             else {
+                // Check word
+
+                let statuses: LetterStatus[] = [];
+                // Loop 5 times (once per character)
+                for (let i = 0; i < 5; i++) {
+                    // If letter is in correct spot
+                    if (current_word.charAt(i) === winningWord.charAt(i)) {
+                        statuses.push(LetterStatus.GREEN);
+                    }
+                    // If letter somewhere else
+                    else if (winningWord.includes(current_word.charAt(i))) {
+                        statuses.push(LetterStatus.YELLOW);
+                    } else {
+                        statuses.push(LetterStatus.NONE);
+                    }
+                }
+
+                setLettersStatus((oldStatus) => [
+                    ...oldStatus.slice(0, board.currentIndex - 5),
+                    ...statuses,
+                    ...Array(30 - board.currentIndex).fill(LetterStatus.DEFAULT),
+                ]);
+
                 setBoard((oldBoard) => ({
                     ...oldBoard,
                     currentRow: oldBoard.currentRow + 1,

@@ -11,7 +11,7 @@ export const allWordsState = atom<Set<string>>({
 // Atom for the current winning word to be guessed
 export const winningWordState = atom<string>({
     key: 'winningWordState',
-    default: '',
+    default: 'range',
 });
 
 // Fetch all words from txt file and return as a Set -- to be stored into atom
