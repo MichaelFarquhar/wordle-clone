@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import './App.css';
 import './normalize.css';
 
-import { Header, Body, Footer } from './components/layout';
+import { Header } from './components/layout';
 import { getLetters } from './utils/getLetters';
 import { useRecoilState } from 'recoil';
 import { ToastContainer } from 'react-toastify';
@@ -53,8 +53,6 @@ function App() {
             <Header />
             <Wordboard />
             <Keyboard />
-            {/* <Body /> */}
-            {/* <Footer /> */}
         </div>
     );
 }
