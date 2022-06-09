@@ -8,7 +8,7 @@ interface Props {
 }
 
 const KeyboardButton = ({ text, disabled }: Props) => {
-    const { addLetter, removeLetter } = useBoardActions();
+    const { addLetter, removeLetter, checkEnteredWord } = useBoardActions();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
@@ -23,7 +23,7 @@ const KeyboardButton = ({ text, disabled }: Props) => {
                 break;
             // if ENTER button is clicked
             case 'enter':
-                console.log('check row');
+                checkEnteredWord();
                 break;
             // Otherwise a letter was clicked
             default:

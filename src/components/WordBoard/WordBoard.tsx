@@ -8,18 +8,20 @@ const Wordboard = () => {
     const lettersStatus = useRecoilValue(lettersStatusState);
 
     return (
-        <section className="wordboard">
-            {board.map((item, index) => {
-                return (
-                    <div
-                        className={`wordboard__letter status${lettersStatus[index]}`}
-                        key={index}
-                    >
-                        {item}
-                    </div>
-                );
-            })}
-        </section>
+        <div className="wordboard-container">
+            <section className="wordboard">
+                {board.map((item, index) => {
+                    return (
+                        <div
+                            className={`wordboard__letter status${lettersStatus[index]}`}
+                            key={index}
+                        >
+                            {item}
+                        </div>
+                    );
+                })}
+            </section>
+        </div>
     );
 };
 

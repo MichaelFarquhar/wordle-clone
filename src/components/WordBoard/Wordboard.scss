@@ -1,16 +1,22 @@
+.wordboard-container {
+    flex: 1;
+    margin-top: 3em;
+}
+
 .wordboard {
     display: grid;
     gap: 0.5em;
     grid-template-columns: repeat(5, 1fr);
     width: fit-content;
-    margin: 2em auto;
+    margin: 0 auto;
 
     &__letter {
-        width: 20px;
-        height: 25px;
+        width: 25px;
+        height: 30px;
         padding: 1rem 1.25rem;
         color: white;
-        font-size: 1.5em;
+        font-size: 2em;
+        font-weight: bold;
         text-transform: uppercase;
         background-color: #1e1e1e;
         line-height: 1;

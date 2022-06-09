@@ -10,6 +10,8 @@ import { ToastContainer } from 'react-toastify';
 import { allWordsState, fetchAllWords } from './state/allWords';
 import { useBoardActions } from './hooks/useBoardActions';
 import { useEventListener } from './hooks/useEventListener';
+import Wordboard from './components/WordBoard/WordBoard';
+import Keyboard from './components/Keyboard/Keyboard';
 
 function App() {
     const lettersList = getLetters;
@@ -49,8 +51,10 @@ function App() {
             <ToastContainer />
 
             <Header />
-            <Body />
-            <Footer />
+            <Wordboard />
+            <Keyboard />
+            {/* <Body /> */}
+            {/* <Footer /> */}
         </div>
     );
 }
