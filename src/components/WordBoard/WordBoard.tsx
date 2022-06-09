@@ -1,5 +1,5 @@
 import { useRecoilValue } from 'recoil';
-import { boardState } from '../../App';
+import { boardState } from '../../state/board';
 import { lettersStatusState } from '../../state/letters';
 import './Wordboard.scss';
 

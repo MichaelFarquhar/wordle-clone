@@ -9,13 +9,14 @@
     &__btn {
         display: grid;
         place-items: center;
-        margin: 0.15em;
+        margin: 0.25em;
         padding: 0.4em;
         min-width: 55px;
         height: 60px;
         font-size: 1.25rem;
         background: rgb(137 137 137);
         color: white;
+        border: none;
         border-radius: 6px;
         transition: 100ms ease;
         text-transform: uppercase;

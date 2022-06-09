@@ -1,11 +1,5 @@
 import React from 'react';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
-import {
-    canAddLetterSelector,
-    canRemoveLetterSelector,
-    canCheckRowSelector,
-    boardState,
-} from '../../App';
+import { useBoardActions } from '../../hooks/useBoardActions';
 import './Keyboard.scss';
 
 interface Props {
@@ -14,39 +8,7 @@ interface Props {
 }
 
 const KeyboardButton = ({ text, disabled }: Props) => {
-    const setBoard = useSetRecoilState(boardState);
-
-    const canAddLetter = useRecoilValue(canAddLetterSelector);
-    const canRemoveLetter = useRecoilValue(canRemoveLetterSelector);
-    const canCheckRow = useRecoilValue(canCheckRowSelector);
-
-    const addLetter = (letter: string) => {
-        if (canAddLetter) {
-            setBoard((oldBoard) => ({
-                ...oldBoard,
-                board: [
-                    ...oldBoard.board.slice(0, oldBoard.currentIndex),
-                    letter,
-                    ...oldBoard.board.slice(oldBoard.currentIndex + 1),
-                ],
-                currentIndex: oldBoard.currentIndex + 1,
-            }));
-        }
-    };
-
-    const removeLetter = () => {
-        if (canRemoveLetter) {
-            setBoard((oldBoard) => ({
-                ...oldBoard,
-                board: [
-                    ...oldBoard.board.slice(0, oldBoard.currentIndex - 1),
-                    '',
-                    ...oldBoard.board.slice(oldBoard.currentIndex),
-                ],
-                currentIndex: oldBoard.currentIndex - 1,
-            }));
-        }
-    };
+    const { addLetter, removeLetter } = useBoardActions();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
