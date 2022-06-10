@@ -29,6 +29,7 @@ function App() {
 
                 setAllWords(new Set(arr));
                 setWinningWord(winningWord);
+                console.log(winningWord);
             });
     }, [allWords.size, setAllWords, setWinningWord]);
 

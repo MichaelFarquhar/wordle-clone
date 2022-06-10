@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { useResetGame } from '../../hooks/useResetGame';
 import { winningWordState } from '../../state/allWords';
 import { gameEndState, gameWinState } from '../../state/game';
 
@@ -14,10 +15,10 @@ export const GameEndModal: FC = () => {
     const [gameHasEnded, setGameHasEnded] = useRecoilState(gameEndState);
     const playerHasWon = useRecoilValue(gameWinState);
     const winningWord = useRecoilValue(winningWordState);
+    const resetGame = useResetGame();
 
     // Checks for when the game has ended and opens the modal
     useEffect(() => {
-        console.log('hey');
         if (gameHasEnded) {
             setIsOpen(true);
         }
@@ -26,6 +27,11 @@ export const GameEndModal: FC = () => {
     const closeModal = () => {
         // setGameHasEnded(false);
         setIsOpen(false);
+
+        // Give time for the modal animation to finish
+        setTimeout(function () {
+            resetGame();
+        }, 250);
     };
 
     return (
@@ -41,14 +47,13 @@ export const GameEndModal: FC = () => {
                                 <span className="loss">Lost</span>
                             )}
                         </h1>
-                        <div>{playerHasWon ? 'Win!' : 'Lose!'}</div>
                         <div>
                             {playerHasWon
-                                ? 'Win!'
-                                : 'The winning word was: ' + winningWord}
+                                ? 'Press the button to generate a new word.'
+                                : 'The winning word was ' + winningWord.toUpperCase()}
                         </div>
-                        <button className="close-button" onClick={() => closeModal()}>
-                            Close
+                        <button className="modal-button" onClick={() => closeModal()}>
+                            New Game
                         </button>
                     </div>
                 </div>
