@@ -4,25 +4,33 @@ import './normalize.css';
 
 import { Header } from './components/layout';
 import { getLetters } from './utils/getLetters';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { ToastContainer } from 'react-toastify';
 
-import { allWordsState, fetchAllWords } from './state/allWords';
+import { allWordsState, fetchAllWords, winningWordState } from './state/allWords';
 import { useBoardActions } from './hooks/useBoardActions';
 import { useEventListener } from './hooks/useEventListener';
 import Wordboard from './components/WordBoard/WordBoard';
 import Keyboard from './components/Keyboard/Keyboard';
+import { GameEndModal } from './components/GameEndModal';
 
 function App() {
     const lettersList = getLetters;
     const [allWords, setAllWords] = useRecoilState(allWordsState);
+    const setWinningWord = useSetRecoilState(winningWordState);
 
     const { addLetter, removeLetter, checkEnteredWord } = useBoardActions();
 
     // Load all eligble words from txt file and save in state
     useEffect(() => {
-        if (allWords.size <= 0) fetchAllWords().then((set) => setAllWords(set));
-    }, [allWords.size, setAllWords]);
+        if (allWords.size <= 0)
+            fetchAllWords().then((arr) => {
+                const winningWord = arr[Math.floor(Math.random() * arr.length)];
+
+                setAllWords(new Set(arr));
+                setWinningWord(winningWord);
+            });
+    }, [allWords.size, setAllWords, setWinningWord]);
 
     const handleKeyUp = ({ key }: KeyboardEvent) => {
         // If Backspace or Delete pressed, press latest letter
@@ -51,6 +59,9 @@ function App() {
             <ToastContainer />
 
             <Header />
+
+            <GameEndModal />
+
             <Wordboard />
             <Keyboard />
         </div>

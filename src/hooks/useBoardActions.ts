@@ -3,6 +3,7 @@ import { boardState, clearRowSelector } from '../state/board';
 import { allWordsState, winningWordState } from '../state/allWords';
 import { lettersStatusState, LetterStatus } from '../state/letters';
 import { showErrorToast } from '../utils/showErrorToast';
+import { gameEndState, gameWinState } from '../state/game';
 
 // Returns true if a letter can be added to the board
 export const canAddLetterSelector = selector<boolean>({
@@ -37,6 +38,8 @@ export const useBoardActions = () => {
     const clearRow = useSetRecoilState(clearRowSelector);
     const winningWord = useRecoilValue(winningWordState);
     const setLettersStatus = useSetRecoilState(lettersStatusState);
+    const [gameHasEnded, setGameHasEnded] = useRecoilState(gameEndState);
+    const setHasWon = useSetRecoilState(gameWinState);
 
     const canAddLetter = useRecoilValue(canAddLetterSelector);
     const canRemoveLetter = useRecoilValue(canRemoveLetterSelector);
@@ -44,7 +47,7 @@ export const useBoardActions = () => {
 
     // ADD LETTER TO BOARD
     const addLetter = (letter: string) => {
-        if (canAddLetter) {
+        if (canAddLetter && !gameHasEnded) {
             setBoard((oldBoard) => ({
                 ...oldBoard,
                 board: [
@@ -59,7 +62,7 @@ export const useBoardActions = () => {
 
     // REMOVE LETTER FROM BOARD
     const removeLetter = () => {
-        if (canRemoveLetter) {
+        if (canRemoveLetter && !gameHasEnded) {
             setBoard((oldBoard) => ({
                 ...oldBoard,
                 board: [
@@ -73,7 +76,7 @@ export const useBoardActions = () => {
     };
 
     const checkEnteredWord = () => {
-        if (canCheckRow) {
+        if (canCheckRow && !gameHasEnded) {
             const current_word = [
                 ...board.board.slice(board.currentIndex - 5, board.currentIndex),
             ].join('');
@@ -86,12 +89,14 @@ export const useBoardActions = () => {
             // Word is a valid word, we perform letter checking
             else {
                 let statuses: LetterStatus[] = [];
+                let winCountCheck = 0;
 
                 // Loop 5 times (once per character)
                 for (let i = 0; i < 5; i++) {
                     // If letter is in correct spot
                     if (current_word.charAt(i) === winningWord.charAt(i)) {
                         statuses.push(LetterStatus.GREEN);
+                        winCountCheck++;
                     }
                     // If letter somewhere else
                     else if (winningWord.includes(current_word.charAt(i))) {
@@ -99,6 +104,18 @@ export const useBoardActions = () => {
                     } else {
                         statuses.push(LetterStatus.NONE);
                     }
+                }
+
+                // Check if the game is a win
+                if (winCountCheck === 5) {
+                    setGameHasEnded(true);
+                    setHasWon(true);
+                }
+
+                // Check if the game is a loss
+                if (board.currentIndex >= 30) {
+                    setGameHasEnded(true);
+                    setHasWon(false);
                 }
 
                 setLettersStatus((oldStatus) => [
@@ -112,7 +129,6 @@ export const useBoardActions = () => {
                     currentRow: oldBoard.currentRow + 1,
                 }));
             }
-            console.log(current_word);
         }
     };
 

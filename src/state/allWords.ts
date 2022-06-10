@@ -15,7 +15,7 @@ export const winningWordState = atom<string>({
 });
 
 // Fetch all words from txt file and return as a Set -- to be stored into atom
-export async function fetchAllWords(): Promise<Set<string>> {
+export async function fetchAllWords(): Promise<Array<string>> {
     const wordleList = require('../wordle-list.txt');
     let wordleListArray: Array<string>;
 
@@ -25,9 +25,9 @@ export async function fetchAllWords(): Promise<Set<string>> {
         .then((text) => {
             // Turn string into array, then return as a new Set
             wordleListArray = text.split(/\r?\n/);
-            return new Set(wordleListArray);
+            return wordleListArray;
         })
         .catch((err) => console.log(err));
 
-    return fetchFile ?? new Set();
+    return fetchFile ?? [];
 }
