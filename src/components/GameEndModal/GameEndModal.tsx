@@ -1,18 +1,14 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { FC, useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { useResetGame } from '../../hooks/useResetGame';
 import { winningWordState } from '../../state/allWords';
 import { gameEndState, gameWinState } from '../../state/game';
 
 import './GameEndModal.scss';
 
-const ModalTitle = (hasWon: boolean) => {
-    return <h1>You Have {hasWon ? 'Won' : 'Lost'}</h1>;
-};
-
 export const GameEndModal: FC = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [gameHasEnded, setGameHasEnded] = useRecoilState(gameEndState);
+    const gameHasEnded = useRecoilValue(gameEndState);
     const playerHasWon = useRecoilValue(gameWinState);
     const winningWord = useRecoilValue(winningWordState);
     const resetGame = useResetGame();
@@ -25,7 +21,6 @@ export const GameEndModal: FC = () => {
     }, [gameHasEnded]);
 
     const closeModal = () => {
-        // setGameHasEnded(false);
         setIsOpen(false);
 
         // Give time for the modal animation to finish
@@ -36,28 +31,26 @@ export const GameEndModal: FC = () => {
 
     return (
         <>
-            <>
-                <div className={`modal-window ${isOpen ? 'visible' : ''}`}>
+            <div className={`modal-window ${isOpen ? 'visible' : ''}`}>
+                <div>
+                    <h1>
+                        You Have{' '}
+                        {playerHasWon ? (
+                            <span className="win">Won</span>
+                        ) : (
+                            <span className="loss">Lost</span>
+                        )}
+                    </h1>
                     <div>
-                        <h1>
-                            You Have{' '}
-                            {playerHasWon ? (
-                                <span className="win">Won</span>
-                            ) : (
-                                <span className="loss">Lost</span>
-                            )}
-                        </h1>
-                        <div>
-                            {playerHasWon
-                                ? 'Press the button to generate a new word.'
-                                : 'The winning word was ' + winningWord.toUpperCase()}
-                        </div>
-                        <button className="modal-button" onClick={() => closeModal()}>
-                            New Game
-                        </button>
+                        {playerHasWon
+                            ? 'Press the button to generate a new word.'
+                            : 'The winning word was ' + winningWord.toUpperCase()}
                     </div>
+                    <button className="modal-button" onClick={() => closeModal()}>
+                        New Game
+                    </button>
                 </div>
-            </>
+            </div>
         </>
     );
 };
