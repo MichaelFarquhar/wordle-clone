@@ -24,10 +24,15 @@
         text-align: center;
         border: 2px solid #3a3a3c;
 
-        // 0, 1 --> Nothing
+        // 0 --> Nothing
+        // 1 --> Slight fade
         // 2 --> Yellow background
         // 3 --> Green background
 
+        &.status1 {
+            color: #c1c1c1;
+            background-color: #3c3c3c;
+        }
         &.status2 {
             background-color: #c9b458;
             border-color: darken(#c9b458, 5);
