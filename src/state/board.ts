@@ -38,6 +38,6 @@ export const clearRowSelector = selector<IBoard>({
                       currentIndex: oldBoard.currentIndex - 5,
                   }
         );
-        console.log(oldBoard);
+        // console.log(oldBoard);
     },
 });
