@@ -14,5 +14,9 @@
     // Spacer to center the logo title in the center
     &__spacer {
         width: 32px;
+
+        @media (max-width: 700px) {
+            display: none;
+        }
     }
 }

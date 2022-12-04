@@ -24,11 +24,22 @@
         text-align: center;
         border: 2px solid #3a3a3c;
 
-        // 0 --> Nothing
+        @media (max-width: 700px) {
+            width: 15px;
+            height: 20px;
+            font-size: 1.5em;
+        }
+
+        // 0 --> Nothing - Show lighter border color
         // 1 --> Slight fade
         // 2 --> Yellow background
         // 3 --> Green background
 
+        &.status0 {
+            &:not(:empty) {
+                border-color: #737373;
+            }
+        }
         &.status1 {
             color: #c1c1c1;
             background-color: #3c3c3c;

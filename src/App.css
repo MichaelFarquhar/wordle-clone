@@ -21,12 +21,12 @@ code {
 }
 
 a {
-    color: #ffc06c;
+    color: #6aaa64;
     transition: 100ms ease-in;
 }
 a:hover {
-    color: #ffab3b;
+    color: #7bc775;
 }
 a:active {
-    color: #ffab3b;
+    color: #7bc775;
 }

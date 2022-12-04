@@ -22,6 +22,20 @@
         transition: 100ms ease;
         text-transform: uppercase;
 
+        svg {
+            width: 30px;
+            @media (max-width: 700px) {
+                width: 20px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            height: 50px;
+            min-width: 25px;
+            margin: 0.2em;
+            font-size: 100%;
+        }
+
         &:hover {
             cursor: pointer;
             background: rgb(195, 195, 195);
