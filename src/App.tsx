@@ -58,11 +58,9 @@ function App() {
         <div className="app">
             {/* Contained to show a toast -- handled in showErrorToast.ts file*/}
             <ToastContainer />
-
-            <Header />
-
             <GameEndModal />
 
+            <Header />
             <Wordboard />
             <Keyboard />
         </div>
